@@ -18,9 +18,9 @@ router.get('/', function (req, res) {
 });
 
 //Devolucion de get considerando posibles errores y elemento inexistente
-router.get('/:dni', function (req, res) {
-	let dni = req.params.dni;
-	audienceService.get(dni, (err, person) => {
+router.get('/:_id', function (req, res) {
+	let _id = req.params._id;
+	audienceService.get(_id, (err, person) => {
 		if(err){
 			res.status(500).send({msg: err});
 		} else if(person === null){
@@ -44,8 +44,8 @@ router.post('/', function (req, res) {
 });
 
 //Devolucion de update considerando posibles errores y no actualizacion
-router.put('/:dni', function (req, res) {
-	const dni = req.params.dni;
+router.put('/:_id', function (req, res) {
+	const _id = req.params._id;
 	const updatedPerson = req.body;
 	audienceService.update(dni, updatedPerson, (err, numUpdates) => {
 		if(err || numUpdates === 0) {
@@ -68,9 +68,9 @@ router.delete('/', function (req, res) {
 });
 
 //Devolucion de remove considerando posibles errores
-router.delete('/:dni', function (req, res) {
-	let dni = req.params.dni;
-	audienceService.remove(dni, (err) => {
+router.delete('/:_id', function (req, res) {
+	let _id = req.params._id;
+	audienceService.remove(_id, (err) => {
 		if(err){
 			res.status(404).send({msg: err});
 		} else {

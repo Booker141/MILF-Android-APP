@@ -20,12 +20,12 @@ Audience.prototype.connectDb = function (callback) {
 
 //Devuelve todos los elementos de la coleccion
 Audience.prototype.getAll = function (callback) {
-	return db.find({}).project({DNI : 1}).toArray(callback);
+	return db.find({}).project({Nombre:1, Apellidos:1}).toArray(callback);
 };
 
 //Devuelve el elemento representado por el ID indicado
-Audience.prototype.get = function (dni, callback) {
-	return db.find({DNI: dni}).toArray(callback);
+Audience.prototype.get = function (_id, callback) {
+	return db.find({_id: ObjectId(_id)}).toArray(callback);
 };
 
 //Añade a la coleccion el elemento indicado
@@ -34,9 +34,9 @@ Audience.prototype.add = function (person, callback) {
 };
 
 //Modifica el elemento representado por el ID indicado con los datos indicados
-Audience.prototype.update = function (dni, updatedPerson, callback) {
+Audience.prototype.update = function (_id, updatedPerson, callback) {
 	delete updatedPerson._id;
-	return db.updateOne({DNI: dni}, {$set: updatedPerson}, callback);
+	return db.updateOne({_id: ObjectId(_id)}, {$set: updatedPerson}, callback);
 };
 
 //Elimina todos los elementos de la coleccion
@@ -45,8 +45,8 @@ Audience.prototype.removeAll = function (callback) {
 };
 
 //Elimina el elemento representado por el ID indicado
-Audience.prototype.remove = function (dni, callback) {
-	return db.deleteOne({DNI: dni}, callback);
+Audience.prototype.remove = function (_id, callback) {
+	return db.deleteOne({_id: ObjectId(_id)}, callback);
 };
 
 module.exports = new Audience();
