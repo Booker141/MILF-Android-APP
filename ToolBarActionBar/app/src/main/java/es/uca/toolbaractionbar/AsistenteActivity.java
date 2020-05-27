@@ -9,8 +9,11 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -36,6 +39,24 @@ public class AsistenteActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Asistente");
+
+        FloatingActionButton modificar = findViewById(R.id.modificarAsistente);
+        /*modificar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent modificarAsistente = new Intent(view.getContext(), ModificarAsistenteActivity.class);
+                view.getContext().startActivity(modificarAsistente);
+            }
+        });*/
+
+        FloatingActionButton eliminar = findViewById(R.id.eliminarAsistente);
+        /*eliminar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent eliminarAsistente = new Intent(view.getContext(), EliminarAsistenteActivity.class);
+                view.getContext().startActivity(eliminarAsistente);
+            }
+        });*/
 
         nombre_apellidos = (TextView) findViewById(R.id.asistente_nombre_apellidos);
         dni = (TextView) findViewById(R.id.asistente_dni);

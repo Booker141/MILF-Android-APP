@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="es.uca.toolbaractionbar">
-    <!--PERMISOS ADICIONALES -->
+    <!-- PERMISOS ADICIONALES -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -11,9 +11,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/AppTheme">
-
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".AnadirAsistenteActivity"
+            android:label="AnadirAsistenteActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AsistenteActivity"
             android:label="AsistenteActivity"

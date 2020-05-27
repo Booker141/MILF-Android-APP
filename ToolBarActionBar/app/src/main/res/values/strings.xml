@@ -5,10 +5,19 @@
     <string name="pestanaFechas">Fechas relevantes</string>
     <string name="pestanaLocalizacion">Localizacion</string>
     <string name="pestanaInfo">Info</string>
-
     <string name="asistentes_boton">Más</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="formatoFecha">Las fechas se muestran en formato &quot;año-mes-día&quot;</string>
+    <string name="nombre_label">Nombre</string>
+    <string name="apellidos_label">Apellidos</string>
+    <string name="dni_label">DNI</string>
+    <string name="telefono_label">Teléfono</string>
+    <string name="fechanac_label">Fecha de nacimiento</string>
+    <string name="botonanadir_label">Añadir</string>
+    <string name="nombre_hint">Alfonso</string>
+    <string name="apellidos_hint">López García</string>
+    <string name="dni_hint">11223344X</string>
+    <string name="telefono_hint">600300900</string>
+    <string name="fechanac_hint">Pulsa dos veces</string>
+    <string name="img_description_form">Símbolo representativo de un individuo cualquiera</string>
     <string name="title_activity_asistentes">AsistentesActivity</string>
 </resources>

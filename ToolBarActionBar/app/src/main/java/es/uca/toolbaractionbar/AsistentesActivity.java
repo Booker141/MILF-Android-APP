@@ -1,5 +1,6 @@
 package es.uca.toolbaractionbar;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.StrictMode;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -45,13 +47,13 @@ public class AsistentesActivity extends AppCompatActivity {
         preparaAsistentes();
 
         FloatingActionButton fab = findViewById(R.id.anadirAsistente);
-        /*fab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent anadirAsistente = new Intent(this, AnadirAsistenteActivity.class);
-                this.startActivity(anadirAsistente);
+                Intent anadirAsistente = new Intent(view.getContext(), AnadirAsistenteActivity.class);
+                view.getContext().startActivity(anadirAsistente);
             }
-        });*/
+        });
     }
 
     @Override
