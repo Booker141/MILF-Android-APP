@@ -13,6 +13,7 @@
     <string name="telefono_label">Teléfono</string>
     <string name="fechanac_label">Fecha de nacimiento</string>
     <string name="botonanadir_label">Añadir</string>
+    <string name="botonmodificar_label">Modificar</string>
     <string name="nombre_hint">Alfonso</string>
     <string name="apellidos_hint">López García</string>
     <string name="dni_hint">11223344X</string>

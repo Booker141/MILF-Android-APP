@@ -18,26 +18,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.Month;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
 
-import okhttp3.Call;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class AnadirAsistenteActivity extends AppCompatActivity {
+public class ModificarAsistenteActivity extends AppCompatActivity {
 
     private EditText nombre, apellidos, dni, telefono, fechaNac;
     private TextView error;
@@ -48,28 +41,34 @@ public class AnadirAsistenteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_anadir_asistente);
+        setContentView(R.layout.activity_modificar_asistente);
 
         /*Carga la barra*/
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Añade asist.");
+        getSupportActionBar().setTitle("Edita asist.");
 
         /*Formulario*/
         nombre = (EditText)findViewById(R.id.nombre_formulario);
         apellidos = (EditText)findViewById(R.id.apellidos_formulario);
         dni = (EditText)findViewById(R.id.dni_formulario);
         telefono = (EditText)findViewById(R.id.telefono_formulario);
-
         fechaNac = (EditText)findViewById(R.id.fechanac_formulario);
-        fechaNac.setInputType(InputType.TYPE_NULL);
+        fechaNac.setInputType(InputType.TYPE_CLASS_TEXT);
+
+        nombre.setText(getIntent().getStringExtra("nombre"));
+        apellidos.setText(getIntent().getStringExtra("apellidos"));
+        dni.setText(getIntent().getStringExtra("dni"));
+        telefono.setText(getIntent().getStringExtra("telefono"));
+        fechaNac.setText(getIntent().getStringExtra("fechaNac"));
+
         fechaNac.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 final Calendar cldr = Calendar.getInstance();
                 int dia = cldr.get(Calendar.DAY_OF_MONTH);
                 int mes = cldr.get(Calendar.MONTH);
                 int ano = cldr.get(Calendar.YEAR);
-                picker = new DatePickerDialog(AnadirAsistenteActivity.this, new DatePickerDialog.OnDateSetListener() {
+                picker = new DatePickerDialog(ModificarAsistenteActivity.this, new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker view, int ano, int mes, int dia) {
                         String birth = ano + "-";
                         if(mes < 10) birth += '0';
@@ -92,7 +91,7 @@ public class AnadirAsistenteActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(datosOk(nombre.getText().toString(), apellidos.getText().toString(), dni.getText().toString(), telefono.getText().toString(), fechaNac.getText().toString())) {
-                    anadeAsistente(nombre.getText().toString(), apellidos.getText().toString(), dni.getText().toString(), telefono.getText().toString(), fechaNac.getText().toString());
+                    modificaAsistente(getIntent().getStringExtra("_id"), nombre.getText().toString(), apellidos.getText().toString(), dni.getText().toString(), telefono.getText().toString(), fechaNac.getText().toString(), getIntent().getStringExtra("fechaIns"));
 
                     Intent asistentes = new Intent(view.getContext(), AsistentesActivity.class);
                     view.getContext().startActivity(asistentes);
@@ -106,7 +105,7 @@ public class AnadirAsistenteActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) { //Necesario para rellenar el menu de la toolbar
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_anadir_asistente, menu);
+        getMenuInflater().inflate(R.menu.menu_modificar_asistente, menu);
         return true;
     }
 
@@ -168,21 +167,23 @@ public class AnadirAsistenteActivity extends AppCompatActivity {
         return ok;
     }
 
-    private void anadeAsistente(String nombre, String apellidos, String dni, String telefono, String fechaNac) {
-        myInvokeTask = new LongRunningGetIO(nombre, apellidos, dni, telefono, fechaNac);
+    private void modificaAsistente(String _id, String nombre, String apellidos, String dni, String telefono, String fechaNac, String fechaIns) {
+        myInvokeTask = new LongRunningGetIO(_id, nombre, apellidos, dni, telefono, fechaNac, fechaIns);
         myInvokeTask.execute();
     }
 
     private class LongRunningGetIO extends AsyncTask<Void, Void, Boolean> {
 
-        private String nombre, apellidos, dni, telefono, fechaNac;
+        private String _id, nombre, apellidos, dni, telefono, fechaNac, fechaIns;
 
-        protected LongRunningGetIO(String nombre, String apellidos, String dni, String telefono, String fechaNac) {
+        protected LongRunningGetIO(String _id, String nombre, String apellidos, String dni, String telefono, String fechaNac, String fechaIns) {
+            this._id = _id;
             this.nombre = nombre;
             this.apellidos = apellidos;
             this.dni = dni;
             this.telefono = telefono;
             this.fechaNac = fechaNac;
+            this.fechaIns = fechaIns;
         }
 
         protected Boolean doInBackground(Void... params) {
@@ -196,17 +197,15 @@ public class AnadirAsistenteActivity extends AppCompatActivity {
 
             /*Se realiza la inserción*/
             OkHttpClient client = new OkHttpClient();
-            Instant instant = new Timestamp(System.currentTimeMillis()).toInstant();
-            ZonedDateTime zdt = instant.atZone(ZoneId.of("Europe/Madrid"));
             RequestBody formBody = new FormBody.Builder()
                     .add("Nombre", nombre)
                     .add("Apellidos", apellidos)
                     .add("DNI", dni)
                     .add("FechaNac", fechaNac)
                     .add("Telefono", telefono)
-                    .add("FechaIns", zdt.toString().substring(0, 10) + " " + zdt.toString().substring(11, 19))
+                    .add("FechaIns", fechaIns)
                     .build();
-            Request request = new Request.Builder().url("http://10.0.2.2:8080/audience/").post(formBody).build();
+            Request request = new Request.Builder().url("http://10.0.2.2:8080/audience/"+_id).put(formBody).build();
 
             try {
                 Response res = client.newCall(request).execute();
@@ -218,8 +217,8 @@ public class AnadirAsistenteActivity extends AppCompatActivity {
         }
 
         protected void onPostExecute(Boolean bool) {
-            if(bool) Toast.makeText(getApplicationContext(), "Asistente insertado", Toast.LENGTH_SHORT).show();
-            else Toast.makeText(getApplicationContext(), "Error al insertar asistente", Toast.LENGTH_LONG).show();
+            if(bool) Toast.makeText(getApplicationContext(), "Asistente modificado", Toast.LENGTH_SHORT).show();
+            else Toast.makeText(getApplicationContext(), "Error al modificar asistente", Toast.LENGTH_LONG).show();
         }
     }
 }

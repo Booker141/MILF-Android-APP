@@ -2,7 +2,10 @@ package es.uca.toolbaractionbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -26,8 +29,9 @@ import okhttp3.Response;
 
 public class AsistenteActivity extends AppCompatActivity {
 
-    private TextView nombre_apellidos, dni, fechaNac, telefono, fechaIns;
-    private LongRunningGetIO myInvokeTask;
+    private TextView nombre, apellidos, dni, fechaNac, telefono, fechaIns;
+    private CargaDatos myInvokeTask;
+    private BorraDatos myInvokeTask2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,24 +45,60 @@ public class AsistenteActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Asistente");
 
         FloatingActionButton modificar = findViewById(R.id.modificarAsistente);
-        /*modificar.setOnClickListener(new View.OnClickListener() {
+        modificar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Bundle b = getIntent().getExtras();
+                b.putString("nombre", nombre.getText().toString());
+                b.putString("apellidos", apellidos.getText().toString());
+                b.putString("dni", dni.getText().toString());
+                b.putString("telefono", telefono.getText().toString());
+                b.putString("fechaNac", fechaNac.getText().toString());
+                b.putString("fechaIns", fechaIns.getText().toString());
                 Intent modificarAsistente = new Intent(view.getContext(), ModificarAsistenteActivity.class);
+                modificarAsistente.putExtras(b);
                 view.getContext().startActivity(modificarAsistente);
             }
-        });*/
+        });
 
         FloatingActionButton eliminar = findViewById(R.id.eliminarAsistente);
-        /*eliminar.setOnClickListener(new View.OnClickListener() {
+        eliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent eliminarAsistente = new Intent(view.getContext(), EliminarAsistenteActivity.class);
-                view.getContext().startActivity(eliminarAsistente);
-            }
-        });*/
+                /*Borrado directo desde AsyncTask*/
+                AlertDialog.Builder adBuilder = new AlertDialog.Builder(AsistenteActivity.this);
+                adBuilder.setMessage("¿Confirma el borrado de este asistente?");
+                adBuilder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        myInvokeTask2 = new BorraDatos(getIntent().getStringExtra("_id"));
+                        myInvokeTask2.execute();
+                        try {
+                            Thread.sleep(500);
+                        } catch(Exception e) {
+                            e.printStackTrace();
+                        }
+                        Intent asistentes = new Intent(AsistenteActivity.this, AsistentesActivity.class);
+                        AsistenteActivity.this.startActivity(asistentes);
+                    }
+                });
+                adBuilder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int which) {}
+                });
 
-        nombre_apellidos = (TextView) findViewById(R.id.asistente_nombre_apellidos);
+                final AlertDialog ad = adBuilder.create();
+                ad.setOnShowListener(new DialogInterface.OnShowListener() {
+                   public void onShow(DialogInterface arg0) {
+                       ad.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorSecondary));
+                       ad.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorSecondary));
+                   }
+                });
+                ad.show();
+            }
+        });
+
+        nombre = (TextView) findViewById(R.id.asistente_nombre);
+        apellidos = (TextView) findViewById(R.id.asistente_apellidos);
         dni = (TextView) findViewById(R.id.asistente_dni);
         fechaNac = (TextView) findViewById(R.id.asistente_fechaNac);
         telefono = (TextView) findViewById(R.id.asistente_telefono);
@@ -107,15 +147,15 @@ public class AsistenteActivity extends AppCompatActivity {
     }
 
     private void cargaAsistenteDatos(String _id) {
-        myInvokeTask = new LongRunningGetIO(_id);
+        myInvokeTask = new CargaDatos(_id);
         myInvokeTask.execute();
     }
 
-    private class LongRunningGetIO extends AsyncTask<Void, Void, JSONObject> {
+    private class CargaDatos extends AsyncTask<Void, Void, JSONObject> {
 
         private String _id = "";
 
-        public LongRunningGetIO(String _id) { this._id = _id; }
+        public CargaDatos(String _id) { this._id = _id; }
 
         @Override
         protected JSONObject doInBackground(Void... params) {
@@ -144,8 +184,8 @@ public class AsistenteActivity extends AppCompatActivity {
         protected void onPostExecute(JSONObject result) {
             if (result != null) {
                 try {
-                    String nombreCompleto = result.getString("Nombre") + " " + result.getString("Apellidos");
-                    nombre_apellidos.setText(nombreCompleto);
+                    nombre.setText(result.getString("Nombre"));
+                    apellidos.setText(result.getString("Apellidos"));
                     dni.setText(result.getString("DNI"));
                     fechaNac.setText(result.getString("FechaNac"));
                     telefono.setText(result.getString("Telefono"));
@@ -159,6 +199,38 @@ public class AsistenteActivity extends AppCompatActivity {
                 noData.show();
             }
         }
+    }
 
+    private class BorraDatos extends AsyncTask<Void, Void, Boolean> {
+
+        private String _id;
+
+        public BorraDatos(String _id) { this._id = _id; }
+
+        protected Boolean doInBackground(Void... params) {
+            /*Aparentemente necesario para una consulta correcta*/
+            int SDK_INT = android.os.Build.VERSION.SDK_INT;
+            if (SDK_INT > 8) {
+                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                        .permitAll().build();
+                StrictMode.setThreadPolicy(policy);
+            }
+
+            /*Se realiza la consulta y se almacena el JSONObject resultante*/
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder().url("http://10.0.2.2:8080/audience/"+_id).delete().build();
+            try {
+                Response res = client.newCall(request).execute();
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        protected void onPostExecute(Boolean bool) {
+            if(bool) Toast.makeText(getApplicationContext(), "Asistente eliminado", Toast.LENGTH_SHORT).show();
+            else Toast.makeText(getApplicationContext(), "Error al eliminar asistente", Toast.LENGTH_LONG).show();
+        }
     }
 }
