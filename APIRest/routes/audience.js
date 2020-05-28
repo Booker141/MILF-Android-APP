@@ -47,7 +47,7 @@ router.post('/', function (req, res) {
 router.put('/:_id', function (req, res) {
 	const _id = req.params._id;
 	const updatedPerson = req.body;
-	audienceService.update(dni, updatedPerson, (err, numUpdates) => {
+	audienceService.update(_id, updatedPerson, (err, numUpdates) => {
 		if(err || numUpdates === 0) {
 			res.status(500).send({msg: err});
 		} else {
