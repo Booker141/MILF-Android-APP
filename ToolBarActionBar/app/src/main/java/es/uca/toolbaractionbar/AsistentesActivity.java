@@ -73,11 +73,11 @@ public class AsistentesActivity extends AppCompatActivity {
             /*case R.id.pestanaPrograma:
                 Intent programa = new Intent(this, ProgramaActivity.class);
                 this.startActivity(programa);
-                return true;
+                return true;*/
             case R.id.pestanaFechas:
                 Intent fechas = new Intent(this, FechasActivity.class);
                 this.startActivity(fechas);
-                return true;
+                return true;/*
             case R.id.pestanaLocalizacion:
                 Intent localizacion = new Intent(this, LocalizacionActivity.class);
                 this.startActivity(localizacion);
@@ -111,7 +111,7 @@ public class AsistentesActivity extends AppCompatActivity {
             /*Se realiza la consulta y se almacena el JSONArray resultante*/
             JSONArray text = null;
             OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder().url("http://10.0.2.2:8080/audience/").build();
+            Request request = new Request.Builder().url("http://"+R.string.IP_Mongo+":8080/audience/").build();
             try {
                 Response res = client.newCall(request).execute();
                 text = new JSONArray(res.body().string());

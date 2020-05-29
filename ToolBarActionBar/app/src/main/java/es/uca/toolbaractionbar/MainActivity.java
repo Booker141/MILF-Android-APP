@@ -61,11 +61,11 @@ public class MainActivity extends AppCompatActivity {
             /*case R.id.pestanaPrograma:
                 Intent programa = new Intent(this, ProgramaActivity.class);
                 this.startActivity(programa);
-                return true;
+                return true;*/
             case R.id.pestanaFechas:
                 Intent fechas = new Intent(this, FechasActivity.class);
                 this.startActivity(fechas);
-                return true;
+                return true;/*
             case R.id.pestanaLocalizacion:
                 Intent localizacion = new Intent(this, LocalizacionActivity.class);
                 this.startActivity(localizacion);

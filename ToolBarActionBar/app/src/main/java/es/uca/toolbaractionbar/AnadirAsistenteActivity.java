@@ -124,11 +124,11 @@ public class AnadirAsistenteActivity extends AppCompatActivity {
             /*case R.id.pestanaPrograma:
                 Intent programa = new Intent(this, ProgramaActivity.class);
                 this.startActivity(programa);
-                return true;
+                return true;*/
             case R.id.pestanaFechas:
                 Intent fechas = new Intent(this, FechasActivity.class);
                 this.startActivity(fechas);
-                return true;
+                return true;/*
             case R.id.pestanaLocalizacion:
                 Intent localizacion = new Intent(this, LocalizacionActivity.class);
                 this.startActivity(localizacion);
@@ -206,7 +206,7 @@ public class AnadirAsistenteActivity extends AppCompatActivity {
                     .add("Telefono", telefono)
                     .add("FechaIns", zdt.toString().substring(0, 10) + " " + zdt.toString().substring(11, 19))
                     .build();
-            Request request = new Request.Builder().url("http://10.0.2.2:8080/audience/").post(formBody).build();
+            Request request = new Request.Builder().url("http://"+R.string.IP_Mongo+":8080/audience/").post(formBody).build();
 
             try {
                 Response res = client.newCall(request).execute();

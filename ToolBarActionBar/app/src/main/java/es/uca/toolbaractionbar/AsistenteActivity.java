@@ -128,11 +128,11 @@ public class AsistenteActivity extends AppCompatActivity {
             /*case R.id.pestanaPrograma:
                 Intent programa = new Intent(this, ProgramaActivity.class);
                 this.startActivity(programa);
-                return true;
+                return true;*/
             case R.id.pestanaFechas:
                 Intent fechas = new Intent(this, FechasActivity.class);
                 this.startActivity(fechas);
-                return true;
+                return true;/*
             case R.id.pestanaLocalizacion:
                 Intent localizacion = new Intent(this, LocalizacionActivity.class);
                 this.startActivity(localizacion);
@@ -170,7 +170,7 @@ public class AsistenteActivity extends AppCompatActivity {
             /*Se realiza la consulta y se almacena el JSONObject resultante*/
             JSONObject data = null;
             OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder().url("http://10.0.2.2:8080/audience/"+_id).build();
+            Request request = new Request.Builder().url("http://"+R.string.IP_Mongo+":8080/audience/"+_id).build();
             try {
                 Response res = client.newCall(request).execute();
                 data = new JSONArray(res.body().string()).getJSONObject(0);
@@ -218,7 +218,7 @@ public class AsistenteActivity extends AppCompatActivity {
 
             /*Se realiza la consulta y se almacena el JSONObject resultante*/
             OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder().url("http://10.0.2.2:8080/audience/"+_id).delete().build();
+            Request request = new Request.Builder().url("http://"+R.string.IP_Mongo+":8080/audience/"+_id).delete().build();
             try {
                 Response res = client.newCall(request).execute();
                 return true;
