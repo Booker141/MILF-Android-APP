@@ -1,49 +1,30 @@
 package es.uca.toolbaractionbar;
 
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.os.StrictMode;
-import android.util.Log;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
-public class MainActivity extends AppCompatActivity {
+public class InfoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*Inicia la actividad indicada*/
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_info);
 
         /*Carga la barra*/
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("App");
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) { //Necesario para rellenar el menu de la toolbar
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_info, menu);
         return true;
     }
 
@@ -70,13 +51,8 @@ public class MainActivity extends AppCompatActivity {
                 Intent localizacion = new Intent(this, LocalizacionActivity.class);
                 this.startActivity(localizacion);
                 return true;
-            case R.id.pestanaInfo:
-                Intent info = new Intent(this, InfoActivity.class);
-                this.startActivity(info);
-                return true;
             default:
                 return false;
         }
     }
-
 }

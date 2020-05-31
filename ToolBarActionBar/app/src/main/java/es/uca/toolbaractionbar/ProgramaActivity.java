@@ -1,49 +1,32 @@
 package es.uca.toolbaractionbar;
 
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.os.StrictMode;
-import android.util.Log;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.google.android.gms.maps.SupportMapFragment;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
-public class MainActivity extends AppCompatActivity {
+public class ProgramaActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*Inicia la actividad indicada*/
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_programa);
 
         /*Carga la barra*/
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Programa");
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) { //Necesario para rellenar el menu de la toolbar
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_programa, menu);
         return true;
     }
 
@@ -57,10 +40,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.pestanaAsistentes:
                 Intent asistentes = new Intent(this, AsistentesActivity.class);
                 this.startActivity(asistentes);
-                return true;
-            case R.id.pestanaPrograma:
-                Intent programa = new Intent(this, ProgramaActivity.class);
-                this.startActivity(programa);
                 return true;
             case R.id.pestanaFechas:
                 Intent fechas = new Intent(this, FechasActivity.class);
@@ -78,5 +57,4 @@ public class MainActivity extends AppCompatActivity {
                 return false;
         }
     }
-
 }

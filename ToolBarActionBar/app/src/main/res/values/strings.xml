@@ -22,4 +22,10 @@
     <string name="fechanac_hint">Pulsa dos veces</string>
     <string name="img_description_form">Símbolo representativo de un individuo cualquiera</string>
     <string name="title_activity_asistentes">AsistentesActivity</string>
+    <string name="localizacion_texto">Nuestro evento tiene lugar en el Teatro Villamarta, un espacio ideal con capacidad para 1.226 espectadores entre el patio de butacas y los dos pisos. Ubicado en Jerez de la Frontera, es uno de los teatros de referencia de Cádiz.\nInaugurado en 1926, es obra del arquitecto Teodoro Anasagasti y está ubicado en el antiguo Convento de Veracruz. Tras su cierre en 1984, fue comprado dos años más tarde por el Ayuntamiento de la localidad gaditana y reinagurado en 1996. Es la sede principal del Festival de Jerez de flamenco.</string>
+    <string name="info1">App desarrollada por el grupo:</string>
+    <string name="info2">Luis Miguel Carpio Gavira\nSergio García Navarro</string>
+    <string name="info3">Información y gestión del evento anual MILF.\n\nProducida para PNET (ESI, UCA).</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>

@@ -70,14 +70,14 @@ public class AsistentesActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         switch(id) {
-            /*case R.id.pestanaPrograma:
+            case R.id.pestanaPrograma:
                 Intent programa = new Intent(this, ProgramaActivity.class);
                 this.startActivity(programa);
-                return true;*/
+                return true;
             case R.id.pestanaFechas:
                 Intent fechas = new Intent(this, FechasActivity.class);
                 this.startActivity(fechas);
-                return true;/*
+                return true;
             case R.id.pestanaLocalizacion:
                 Intent localizacion = new Intent(this, LocalizacionActivity.class);
                 this.startActivity(localizacion);
@@ -85,7 +85,7 @@ public class AsistentesActivity extends AppCompatActivity {
             case R.id.pestanaInfo:
                 Intent info = new Intent(this, InfoActivity.class);
                 this.startActivity(info);
-                return true;*/
+                return true;
             default:
                 return false;
         }

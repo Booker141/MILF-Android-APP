@@ -1,49 +1,46 @@
 package es.uca.toolbaractionbar;
 
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.os.StrictMode;
-import android.util.Log;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
+import android.view.ViewGroup;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
+public class LocalizacionActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
-public class MainActivity extends AppCompatActivity {
+    private GoogleMap mapa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*Inicia la actividad indicada*/
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_localizacion);
 
         /*Carga la barra*/
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Localización");
+
+        SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) { //Necesario para rellenar el menu de la toolbar
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_localizacion, menu);
         return true;
     }
 
@@ -66,10 +63,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent fechas = new Intent(this, FechasActivity.class);
                 this.startActivity(fechas);
                 return true;
-            case R.id.pestanaLocalizacion:
-                Intent localizacion = new Intent(this, LocalizacionActivity.class);
-                this.startActivity(localizacion);
-                return true;
             case R.id.pestanaInfo:
                 Intent info = new Intent(this, InfoActivity.class);
                 this.startActivity(info);
@@ -79,4 +72,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void onMapReady(GoogleMap map) {
+        mapa = map;
+        mapa.addMarker(new MarkerOptions().position(new LatLng(36.682941, -6.135256)).title("Teatro Villamarta"));
+        mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(36.682941, -6.135256), 17f));
+    }
 }

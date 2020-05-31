@@ -2,10 +2,18 @@ package es.uca.toolbaractionbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.media.RingtoneManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,7 +34,7 @@ import java.util.Date;
 public class FechasActivity extends AppCompatActivity {
 
     private ImageButton fecha1, fecha2;
-    //private Notificacion myInvokeTask;
+    private static final int NOTIF_ALERTA_ID = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +45,7 @@ public class FechasActivity extends AppCompatActivity {
         /*Carga la barra*/
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Fechas evento");
 
         fecha1 = (ImageButton)findViewById(R.id.fecha26);
         fecha1.setOnClickListener(new View.OnClickListener() {
@@ -50,7 +59,25 @@ public class FechasActivity extends AppCompatActivity {
         fecha2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*generaNotificacion();*/
+                Intent intent = new Intent(view.getContext(), LocalizacionActivity.class);
+                PendingIntent pIntent = PendingIntent.getActivity(view.getContext(), 0, intent, 0);
+                NotificationCompat.Builder notification = new NotificationCompat.Builder(FechasActivity.this, "default")
+                        .setSmallIcon(R.drawable.ic_logo_trans)
+                        .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.logo))
+                        .setContentTitle("¡Te estamos esperando!")
+                        .setContentText("Consulta aquí la ubicación del evento para el día indicado")
+                        .setContentIntent(pIntent)
+                        .setAutoCancel(true)
+                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                        .setVibrate(new long[] {1000, 1000, 1000, 1000, 1000});
+                NotificationManager mNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    NotificationChannel channel = new NotificationChannel("default", "Default channel", NotificationManager.IMPORTANCE_DEFAULT);
+                    mNotificationManager.createNotificationChannel(channel);
+                }
+                mNotificationManager.notify(NOTIF_ALERTA_ID, notification.build());
+
+
                 Instant instant = new Timestamp(System.currentTimeMillis()).toInstant();
                 ZonedDateTime zdt = instant.atZone(ZoneId.of("Europe/Madrid"));
                 Date hoy = Date.from(zdt.toInstant()), fecha = null;
@@ -84,22 +111,18 @@ public class FechasActivity extends AppCompatActivity {
                 Intent asistentes = new Intent(this, AsistentesActivity.class);
                 this.startActivity(asistentes);
                 return true;
-            /*case R.id.pestanaPrograma:
+            case R.id.pestanaPrograma:
                 Intent programa = new Intent(this, ProgramaActivity.class);
                 this.startActivity(programa);
-                return true;*/
-            case R.id.pestanaFechas:
-                Intent fechas = new Intent(this, FechasActivity.class);
-                this.startActivity(fechas);
                 return true;
-            /*case R.id.pestanaLocalizacion:
+            case R.id.pestanaLocalizacion:
                 Intent localizacion = new Intent(this, LocalizacionActivity.class);
                 this.startActivity(localizacion);
                 return true;
             case R.id.pestanaInfo:
                 Intent info = new Intent(this, InfoActivity.class);
                 this.startActivity(info);
-                return true;*/
+                return true;
             default:
                 return false;
         }
