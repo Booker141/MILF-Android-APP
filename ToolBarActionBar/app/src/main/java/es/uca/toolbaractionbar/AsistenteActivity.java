@@ -170,7 +170,7 @@ public class AsistenteActivity extends AppCompatActivity {
             /*Se realiza la consulta y se almacena el JSONObject resultante*/
             JSONObject data = null;
             OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder().url("http://"+R.string.IP_Mongo+":8080/audience/"+_id).build();
+            Request request = new Request.Builder().url(getString(R.string.MongoURL)+_id).build();
             try {
                 Response res = client.newCall(request).execute();
                 data = new JSONArray(res.body().string()).getJSONObject(0);
@@ -218,7 +218,7 @@ public class AsistenteActivity extends AppCompatActivity {
 
             /*Se realiza la consulta y se almacena el JSONObject resultante*/
             OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder().url("http://"+R.string.IP_Mongo+":8080/audience/"+_id).delete().build();
+            Request request = new Request.Builder().url(getString(R.string.MongoURL)+_id).delete().build();
             try {
                 Response res = client.newCall(request).execute();
                 return true;

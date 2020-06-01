@@ -111,7 +111,7 @@ public class AsistentesActivity extends AppCompatActivity {
             /*Se realiza la consulta y se almacena el JSONArray resultante*/
             JSONArray text = null;
             OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder().url("http://"+R.string.IP_Mongo+":8080/audience/").build();
+            Request request = new Request.Builder().url(getString(R.string.MongoURL)).build();
             try {
                 Response res = client.newCall(request).execute();
                 text = new JSONArray(res.body().string());

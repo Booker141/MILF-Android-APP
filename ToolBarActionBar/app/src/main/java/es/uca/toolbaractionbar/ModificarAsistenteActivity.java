@@ -205,7 +205,7 @@ public class ModificarAsistenteActivity extends AppCompatActivity {
                     .add("Telefono", telefono)
                     .add("FechaIns", fechaIns)
                     .build();
-            Request request = new Request.Builder().url("http://"+R.string.IP_Mongo+":8080/audience/"+_id).put(formBody).build();
+            Request request = new Request.Builder().url(getString(R.string.MongoURL)+_id).put(formBody).build();
 
             try {
                 Response res = client.newCall(request).execute();

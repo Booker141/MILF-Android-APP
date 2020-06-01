@@ -206,7 +206,7 @@ public class AnadirAsistenteActivity extends AppCompatActivity {
                     .add("Telefono", telefono)
                     .add("FechaIns", zdt.toString().substring(0, 10) + " " + zdt.toString().substring(11, 19))
                     .build();
-            Request request = new Request.Builder().url("http://"+R.string.IP_Mongo+":8080/audience/").post(formBody).build();
+            Request request = new Request.Builder().url(getString(R.string.MongoURL)).post(formBody).build();
 
             try {
                 Response res = client.newCall(request).execute();
