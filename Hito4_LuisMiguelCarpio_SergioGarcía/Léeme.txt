@@ -1,0 +1,5 @@
+Modificar la IP de acceso a la API en el siguiente fichero:
+
+ToolBarActionBar\app\src\main\res\values\strings.xml
+
+Buscar la línea con name="MongoURL".
